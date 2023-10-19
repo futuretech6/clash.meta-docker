@@ -18,4 +18,6 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWD }}
 
       - name: Build the docker image and push
-        run: docker buildx build --platform linux/amd64,linux/arm64 --tag ${{ secrets.DOCKERHUB_USERNAME }}/clash.meta:latest --file Dockerfile --push .
+        run: |
+          docker buildx create --use
+          docker buildx build --platform linux/amd64,linux/arm64 --tag ${{ secrets.DOCKERHUB_USERNAME }}/clash.meta:latest --file Dockerfile --push .
