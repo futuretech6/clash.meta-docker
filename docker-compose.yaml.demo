@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  zju-connect:
+    image: futuretech6/clash.meta
+    container_name: clash.meta
+    restart: unless-stopped
+    ports:
+      - 7890:7890
+      - 9090:9090
+    volumes:
+      - /path/to/config.yaml:/config.toml

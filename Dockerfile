@@ -18,8 +18,5 @@ RUN wget https://github.com/MetaCubeX/Clash.Meta/releases/download/$META_VERSION
 RUN gunzip -c $META_BINARY.gz > /bin/clash
 RUN chmod +x /bin/clash
 
-EXPOSE 7890/tcp
-EXPOSE 9090/tcp
-
 RUN touch /config.yaml
 ENTRYPOINT ["/bin/clash", "-f", "/config.yaml", "-m"]
