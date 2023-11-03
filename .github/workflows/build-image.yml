@@ -3,7 +3,11 @@ name: build-image
 on:
   workflow_dispatch:
   push:
+    paths:
+      - "Dockerfile"
   pull_request:
+    paths:
+      - "Dockerfile"
 
 jobs:
   build-and-push-image:
