@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  zju-connect:
+  clash.meta:
     image: futuretech6/clash.meta
     container_name: clash.meta
     restart: unless-stopped
