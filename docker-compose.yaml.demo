@@ -9,4 +9,4 @@ services:
       - 7890:7890
       - 9090:9090
     volumes:
-      - /path/to/config.yaml:/config.toml
+      - /path/to/config.yaml:/config.yaml
