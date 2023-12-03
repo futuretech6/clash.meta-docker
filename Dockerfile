@@ -2,7 +2,7 @@
 FROM --platform=$BUILDPLATFORM alpine AS build
 
 ARG TARGETOS TARGETARCH
-ARG META_VERSION=v1.16.0
+ARG META_VERSION=v1.17.0
 
 ENV CONFIG_PATH=/clash.meta-config/
 
@@ -14,7 +14,7 @@ ENV CONFIG_PATH=/clash.meta-config/
 # RUN go mod download
 # RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /bin/clash .
 
-ARG META_BINARY=clash.meta-$TARGETOS-$TARGETARCH-$META_VERSION
+ARG META_BINARY=mihomo-$TARGETOS-$TARGETARCH-$META_VERSION
 RUN apk add wget
 RUN wget https://github.com/MetaCubeX/Clash.Meta/releases/download/$META_VERSION/$META_BINARY.gz
 RUN gunzip -c $META_BINARY.gz > /bin/clash
