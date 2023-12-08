@@ -14,7 +14,7 @@ ENV CONFIG_PATH=/clash.meta-config/
 # RUN go mod download
 # RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /bin/clash .
 
-ARG META_BINARY=mihomo-$TARGETOS-$TARGETARCH-$META_VERSION.gz
+ARG META_BINARY=mihomo-$TARGETOS-$TARGETARCH-cgo-$META_VERSION.gz
 RUN apk add wget
 RUN wget https://github.com/MetaCubeX/Clash.Meta/releases/download/$META_VERSION/$META_BINARY
 RUN gunzip -c $META_BINARY > /bin/clash
