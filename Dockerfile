@@ -6,7 +6,7 @@ ARG META_VERSION=v1.17.0
 
 ENV CONFIG_PATH=/clash.meta-config/
 
-# ARG META_PATH=/Clash.Meta
+# ENV META_PATH=/Clash.Meta
 # RUN apk add git
 # RUN git clone https://github.com/MetaCubeX/Clash.Meta.git $META_PATH
 # WORKDIR $META_PATH
@@ -14,12 +14,17 @@ ENV CONFIG_PATH=/clash.meta-config/
 # RUN go mod download
 # RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /bin/clash .
 
-ARG META_BINARY=mihomo-$TARGETOS-$TARGETARCH-cgo-$META_VERSION.gz
+# ENV META_BINARY=mihomo-$TARGETOS-$TARGETARCH-$META_VERSION.gz
 RUN apk add wget
-RUN wget https://github.com/MetaCubeX/Clash.Meta/releases/download/$META_VERSION/$META_BINARY
-RUN gunzip -c $META_BINARY > /bin/clash
-RUN chmod +x /bin/clash
-RUN rm -f $META_BINARY
+RUN if [ "$TARGETARCH" == "amd64" ]; then \
+        export META_BINARY="mihomo-$TARGETOS-$TARGETARCH-compatible-$META_VERSION.gz" ; \
+    else \
+        export META_BINARY="mihomo-$TARGETOS-$TARGETARCH-$META_VERSION.gz" ; \
+    fi ; \
+    wget https://github.com/MetaCubeX/Clash.Meta/releases/download/$META_VERSION/$META_BINARY ; \
+    gunzip -c $META_BINARY > /bin/clash ; \
+    chmod +x /bin/clash ; \
+    rm -f $META_BINARY
 
 RUN apk add unzip
 RUN mkdir -p $CONFIG_PATH
@@ -32,6 +37,9 @@ RUN wget https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
     mkdir -p ui/ && \
     mv metacubexd-gh-pages/ ui/xd/
 RUN rm -f gh-pages.zip
+
+# clean up
+RUN apk del wget unzip
 
 RUN touch /config.yaml
 ENTRYPOINT /bin/clash -f /config.yaml -d $CONFIG_PATH
