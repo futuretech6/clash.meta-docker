@@ -3,12 +3,13 @@ FROM --platform=$BUILDPLATFORM alpine AS build
 
 ARG TARGETOS TARGETARCH
 ARG META_VERSION=v1.17.0
+ARG META_REPO=https://github.com/MetaCubeX/mihomo
 
 ENV CONFIG_PATH=/clash.meta-config/
 
 # ENV META_PATH=/Clash.Meta
 # RUN apk add git
-# RUN git clone https://github.com/MetaCubeX/Clash.Meta.git $META_PATH
+# RUN git clone $META_REPO $META_PATH
 # WORKDIR $META_PATH
 # RUN git checkout tags/$META_VERSION
 # RUN go mod download
@@ -21,17 +22,18 @@ RUN if [ "$TARGETARCH" == "amd64" ]; then \
     else \
         export META_BINARY="mihomo-$TARGETOS-$TARGETARCH-$META_VERSION.gz" ; \
     fi ; \
-    wget https://github.com/MetaCubeX/Clash.Meta/releases/download/$META_VERSION/$META_BINARY ; \
+    wget $META_REPO/releases/download/$META_VERSION/$META_BINARY ; \
     gunzip -c $META_BINARY > /bin/clash ; \
     chmod +x /bin/clash ; \
     rm -f $META_BINARY
 
+# add geox and ui
 RUN apk add unzip
 RUN mkdir -p $CONFIG_PATH
 WORKDIR $CONFIG_PATH
-RUN wget https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat
-RUN wget https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat
-RUN wget https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb
+RUN wget https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat
+RUN wget https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat
+RUN wget https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb
 RUN wget https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip && \
     unzip gh-pages.zip && \
     mkdir -p ui/ && \
