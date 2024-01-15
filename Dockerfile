@@ -2,7 +2,7 @@
 FROM --platform=$BUILDPLATFORM alpine AS build
 
 ARG TARGETOS TARGETARCH
-ARG META_VERSION=v1.17.0
+ARG META_VERSION=v1.18.0
 ARG META_REPO=https://github.com/MetaCubeX/mihomo
 
 ENV CONFIG_PATH=/clash.meta-config/
